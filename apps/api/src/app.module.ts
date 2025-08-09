@@ -10,9 +10,9 @@ import { OrganizationsModule } from './organizations/organizations.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT ?? '3306', 10),
+      port: parseInt(process.env.DB_PORT ?? '3307', 10),
       username: process.env.DB_USER || 'root',
-      password: process.env.DB_PASS || '',
+      password: process.env.DB_PASS || 'password',
       database: process.env.DB_NAME || 'tali_talent_org_health_development',
       autoLoadEntities: true,
       synchronize: true // dev only

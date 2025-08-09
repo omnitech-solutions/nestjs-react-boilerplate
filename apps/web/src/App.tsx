@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Layout, Typography, Card, Row, Col, Tag } from 'antd'
 import { api } from './api'
 
-console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
-
 const { Header, Content } = Layout
 const { Title, Paragraph } = Typography
 

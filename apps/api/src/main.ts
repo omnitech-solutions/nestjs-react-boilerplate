@@ -1,11 +1,20 @@
 import 'reflect-metadata';
+
+import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+dotenv.config({ path: '.env' });
+
+if (process.env.NODE_ENV) {
+  dotenv.config({ path: `.env.${process.env.NODE_ENV}`, override: true });
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
+  app.getHttpAdapter().get('/', (_req, res) => res.redirect('/docs'));
   const config = new DocumentBuilder()
     .setTitle('Org Health API')
     .setDescription('Organizational Health API (demo)')
