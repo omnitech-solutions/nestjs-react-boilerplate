@@ -1,0 +1,19 @@
+{
+  "name": "org-health",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.7.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r --filter ./apps/* run build",
+    "dev": "pnpm -r --parallel --filter ./apps/* run dev",
+    "test": "pnpm -r --filter ./apps/* run test",
+    "lint": "pnpm -r --filter ./apps/* run lint"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0"
+  }
+}
