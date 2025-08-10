@@ -12,13 +12,8 @@
     "lint": {
       "outputs": []
     },
-    "test": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**", "test-results/**"]
-    },
-    "test:e2e": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**", "test-results/**"]
-    }
+    "test": { "dependsOn": ["^build"], "outputs": [] },
+    "test:e2e": { "dependsOn": ["test"], "outputs": [] },
+    "test:all": { "dependsOn": ["test:e2e"] }
   }
 }

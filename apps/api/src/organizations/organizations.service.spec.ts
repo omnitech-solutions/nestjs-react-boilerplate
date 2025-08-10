@@ -20,8 +20,8 @@ describe('OrganizationsService', () => {
   });
 
   it('creates an organization', async () => {
-    const save = jest.spyOn(repo, 'save').mockResolvedValue({ id: 1, name: 'Acme' } as any);
-    jest.spyOn(repo, 'create').mockReturnValue({ name: 'Acme' } as any);
+    const save = vi.spyOn(repo, 'save').mockResolvedValue({ id: 1, name: 'Acme' } as any);
+    vi.spyOn(repo, 'create').mockReturnValue({ name: 'Acme' } as any);
     const out = await service.create({ name: 'Acme' });
     expect(save).toHaveBeenCalled();
     expect(out.id).toBe(1);

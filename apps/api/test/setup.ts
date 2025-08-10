@@ -1,8 +1,4 @@
-import '@testing-library/jest-dom/vitest'
-
-import './polyfills'
-
-process.env.VITE_API_URL ||= 'http://localhost:3000';
+import 'reflect-metadata'
 
 // Stub fetch (covers most libs)
 vi.stubGlobal('fetch', vi.fn(async () => ({
