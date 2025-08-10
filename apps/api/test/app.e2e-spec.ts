@@ -12,6 +12,7 @@ describe('App (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix('api');   // ← important
     await app.init();
   });
 
@@ -19,8 +20,8 @@ describe('App (e2e)', () => {
     await app.close();
   });
 
-  it('/ (GET) health', async () => {
-    const res = await request(app.getHttpServer()).get('/');
+  it('/api/health (GET) health', async () => {
+    const res = await request(app.getHttpServer()).get('/api/health');
     expect(res.status).toBe(200);
     expect(res.body.ok).toBe(true);
   });

@@ -17,6 +17,7 @@ build
 
 # IDE / Editor
 .idea
+.turbo
 .vscode
 *.swp
 

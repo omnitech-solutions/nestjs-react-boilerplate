@@ -1,30 +1,12 @@
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
+
+import './polyfills'
 
 process.env.VITE_API_URL ||= 'http://localhost:3000';
 
-// Polyfill matchMedia for AntD’s responsive hooks
-if (!window.matchMedia) {
-    Object.defineProperty(window, 'matchMedia', {
-        writable: true,
-        value: (query: string) => ({
-            matches: false,
-            media: query,
-            onchange: null,
-            addListener: jest.fn(),            // deprecated
-            removeListener: jest.fn(),         // deprecated
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
-            dispatchEvent: jest.fn(),
-        }),
-    });
-}
-
-// (Optional) Some AntD components use ResizeObserver
-if (!(window as any).ResizeObserver) {
-    class ResizeObserver {
-        observe() {}
-        unobserve() {}
-        disconnect() {}
-    }
-    (window as any).ResizeObserver = ResizeObserver;
-}
+const realError = console.error
+vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+    const msg = args[0]
+    if (typeof msg === 'string' && msg.includes('XMLHttpRequest')) return
+    realError(...args as [])
+})

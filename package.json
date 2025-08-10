@@ -8,15 +8,13 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "pnpm -r --filter ./apps/* run build",
-    "dev": "pnpm -r --parallel --filter ./apps/* run dev",
-    "test": "pnpm -r --filter ./apps/* run test",
-    "lint": "pnpm -r --filter ./apps/* run lint"
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e"
   },
   "devDependencies": {
-    "ts-node-dev": "^2.0.0"
-  },
-  "dependencies": {
-    "dotenv": "^17.2.1"
+    "turbo": "^2.5.5"
   }
 }

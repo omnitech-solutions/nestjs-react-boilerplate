@@ -12,7 +12,11 @@
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    "types": ["node", "jest", "@testing-library/jest-dom", "vite/client"]
   },
-  "include": ["src", "test"]
+  "include": [
+    "src",
+    "test",
+    "../../node_modules/.pnpm/vitest@3.2.4_@types+node@20.19.10_jsdom@26.1.0/node_modules/vitest/globals.d.ts"
+  ]
 }

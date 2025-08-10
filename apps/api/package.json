@@ -46,6 +46,7 @@
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "turbo": "^2.0.3",
     "typescript": "^5.4.5"
   }
 }

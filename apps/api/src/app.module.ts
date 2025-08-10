@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Organization } from './organizations/organization.entity';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { HealthController } from './health.controller';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
     TypeOrmModule.forFeature([Organization]),
     OrganizationsModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService],
 })
 export class AppModule {}
