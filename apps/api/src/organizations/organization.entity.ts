@@ -1,22 +1,25 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'organizations' })
 export class Organization {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid', { name: 'uuid' })
+  uuid!: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', length: 255 })
   name!: string;
 
-  @Column({ nullable: true })
-  industry?: string;
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  industry?: string | null;
 
-  @Column({ nullable: true })
-  size?: string;
+  @Column({ type: 'varchar', length: 2048, nullable: true })
+  website?: string | null;
 
-  @CreateDateColumn()
+  @Column({ type: 'text', nullable: true })
+  notes?: string | null;
+
+  @CreateDateColumn({ name: 'created_at', type: 'datetime' })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
   updatedAt!: Date;
 }

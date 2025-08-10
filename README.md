@@ -26,10 +26,10 @@ pnpm -C apps/api dev
 pnpm -C apps/web dev
 
 # API Example
-curl http://localhost:3000/api/organizations
+curl http://127.0.0.1:3000/api/organizations
 ```
 
-Swagger: [http://localhost:3000/docs](http://localhost:3000/docs)\
+Swagger: [http://127.0.0.1:3000/docs](http://127.0.0.1:3000/docs)\
 Web: [http://localhost:5173](http://localhost:5173)
 
 ## Tests

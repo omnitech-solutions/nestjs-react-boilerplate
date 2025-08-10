@@ -1,15 +1,8 @@
 import 'reflect-metadata';
 
-import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
-dotenv.config({ path: '.env' });
-
-if (process.env.NODE_ENV) {
-  dotenv.config({ path: `.env.${process.env.NODE_ENV}`, override: true });
-}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -26,6 +19,6 @@ async function bootstrap() {
   const port = Number(process.env.PORT || 3000);
   await app.listen(port);
   // eslint-disable-next-line no-console
-  console.log(`API running on http://localhost:${port} (docs: /docs)`);
+  console.log(`API running on http://127.0.0.1:${port} (docs: /docs)`);
 }
 bootstrap();

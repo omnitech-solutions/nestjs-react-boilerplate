@@ -1,27 +1,42 @@
+// apps/api/src/app.module.ts
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Organization } from './organizations/organization.entity';
-import { OrganizationsModule } from './organizations/organizations.module';
 import { HealthController } from './health.controller';
+import { OrganizationsModule } from './organizations/organizations.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT ?? '3307', 10),
-      username: process.env.DB_USER || 'root',
-      password: process.env.DB_PASS || 'password',
-      database: process.env.DB_NAME || 'tali_talent_org_health_development',
-      autoLoadEntities: true,
-      synchronize: true // dev only
-    }),
-    TypeOrmModule.forFeature([Organization]),
-    OrganizationsModule
-  ],
-  controllers: [AppController, HealthController],
-  providers: [AppService],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath:
+                process.env.NODE_ENV === 'test' ? ['.env.test', '.env'] : ['.env'],
+        }),
+        TypeOrmModule.forRootAsync({
+            // Only Nest-specific bits here; DataSource comes from data-source.ts
+            useFactory: (): TypeOrmModuleOptions => ({
+                autoLoadEntities: true,
+                entities: [], // rely on autoLoadEntities to avoid TS glob issues in tests
+                synchronize:
+                    process.env.NODE_ENV !== 'production' &&
+                    process.env.TYPEORM_SYNC === 'true',
+                logging:
+                    process.env.NODE_ENV === 'test'
+                        ? false
+                        : process.env.NODE_ENV !== 'production',
+            }),
+            dataSourceFactory: async () => {
+                const { default: AppDataSource } = await import('./database/data-source');
+                if (!AppDataSource.isInitialized) await AppDataSource.initialize();
+                return AppDataSource;
+            },
+        }),
+        OrganizationsModule,
+    ],
+    controllers: [AppController, HealthController],
+    providers: [AppService],
 })
 export class AppModule {}

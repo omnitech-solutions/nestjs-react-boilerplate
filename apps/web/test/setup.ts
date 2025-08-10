@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 
 import './polyfills'
 
-process.env.VITE_API_URL ||= 'http://localhost:3000';
+process.env.VITE_API_URL ||= 'http://127.0.0.1:3000';
 
 // Stub fetch (covers most libs)
 vi.stubGlobal('fetch', vi.fn(async () => ({

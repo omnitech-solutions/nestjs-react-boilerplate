@@ -4,7 +4,7 @@ import axios from 'axios';
 const baseURL =
     import.meta.env?.VITE_API_URL || // Vite build-time var
     (typeof process !== 'undefined' && process.env?.VITE_API_URL) || // Jest/node fallback
-    'http://localhost:3000'; // default for dev
+    'http://127.0.0.1:3000'; // default for dev
 
 export const api = axios.create({
     baseURL,
