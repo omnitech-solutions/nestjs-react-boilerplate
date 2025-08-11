@@ -2,7 +2,7 @@
 
 Monorepo with:
 
-- **API**: NestJS-style TypeScript, REST, TypeORM (MySQL), Swagger, Jest unit + e2e
+- **API**: NestJS-style TypeScript, REST, TypeORM (MySQL), Swagger, Jest unit + e2e, seed framework
 - **Web**: React + Vite + Ant Design, Jest/RTL smoke test
 - **Infra**: Docker Compose (MySQL)
 
@@ -45,12 +45,39 @@ pnpm -C apps/web test
 From the project root:
 
 ```bash
-pnpm -C apps/api db:up       # Start DB container
-pnpm -C apps/api db:down     # Stop DB container
-pnpm -C apps/api db:reset    # Recreate DB container from scratch
-pnpm -C apps/api db:shell    # Log into DB container
+pnpm -C apps/api db:up             # Start DB container
+pnpm -C apps/api db:down           # Stop DB container
+pnpm -C apps/api db:reset          # Recreate DB container from scratch
+pnpm -C apps/api db:shell          # Log into DB container
 pnpm -C apps/api db:mysql:verify   # List org health databases in container
+
+pnpm -C apps/api db:migration:generate <Name>   # Generate a migration
+pnpm -C apps/api db:migration:create <Name>     # Create an empty migration
+pnpm -C apps/api db:migration:run               # Run migrations
+pnpm -C apps/api db:migration:revert            # Revert last migration
+pnpm -C apps/api db:schema:drop                 # Drop DB schema
+pnpm -C apps/api db:show                        # Show migrations
 ```
 
 These commands are configured in `package.json` and use `apps/api/docker/mysql/docker-compose.yml`. The DB init scripts automatically create both the development and test databases when starting fresh.
+
+## Seeding the Database
+
+A dynamic seed framework is included to populate and clear data.
+
+From the project root:
+
+```bash
+pnpm -C apps/api db:seed        # Run all seeders (idempotent)
+pnpm -C apps/api db:seed:clear  # Clear all seeded data
+```
+
+### How Seeding Works
+
+- **Seed services** are automatically discovered in `src/**/seeds/**/*seed.service.ts`.
+- Each seed service can implement:
+    - `async run()` — inserts data (should be idempotent)
+    - `async clear()` — removes data inserted by the seed
+- Example: `OrganizationSeedService` inserts demo organizations using [`@faker-js/faker`](https://github.com/faker-js/faker).
+- `fast-glob` is used to dynamically load both seeders and entities, so new seed files are picked up automatically.
 
