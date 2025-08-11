@@ -1,30 +1,30 @@
-import { IsOptional, IsString, Length } from 'class-validator';
+import { IsOptional, IsString, Length } from 'class-validator'
 
 export class CreateOrganizationDto {
   @IsString()
   @Length(2, 120)
-  name!: string;
+  name!: string
 
   @IsOptional()
   @IsString()
-  industry?: string;
+  industry?: string
 
   @IsOptional()
   @IsString()
-  size?: string;
+  size?: string
 }
 
 export class UpdateOrganizationDto {
   @IsOptional()
   @IsString()
   @Length(2, 120)
-  name?: string;
+  name?: string
 
   @IsOptional()
   @IsString()
-  industry?: string;
+  industry?: string
 
   @IsOptional()
   @IsString()
-  size?: string;
+  size?: string
 }

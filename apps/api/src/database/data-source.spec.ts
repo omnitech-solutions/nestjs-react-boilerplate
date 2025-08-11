@@ -1,99 +1,156 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { DataSource } from 'typeorm';
-import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-const importFresh = async () => {
-    vi.resetModules();
-    return await import('./data-source');
-};
+/**
+ * We re-import the module each test to re-run top-level code (dotenv + construction).
+ * Helpers below set up mocks before the dynamic import.
+ */
+const importFresh = async () => await import('./data-source')
 
-const withEnv = async (overrides: Record<string, string | undefined>) => {
-    const original = { ...process.env };
-    Object.entries(overrides).forEach(([k, v]) => {
-        if (v === undefined) delete (process.env as any)[k];
-        else (process.env as any)[k] = v;
-    });
-    const mod = await importFresh();
-    const ds = mod.AppDataSource as DataSource;
-    // restore
-    process.env = original;
-    return ds;
-};
+beforeEach(() => {
+  vi.resetModules()
+  vi.clearAllMocks()
+  // reset env used by data-source import
+  delete process.env.NODE_ENV
+  delete process.env.DOTENV_CONFIG_PATH
+  ;(globalThis as any).__lastDSOpts = undefined
+})
 
-describe('AppDataSource (MySQL)', () => {
-    beforeEach(() => {
-        vi.unstubAllGlobals();
-    });
-    afterEach(() => {
-        vi.resetModules();
-    });
+/**
+ * Mock typeorm so we can assert on the ctor args passed to DataSource
+ */
+vi.mock('typeorm', () => {
+  class DataSource {
+    constructor(opts: unknown) {
+      ;(globalThis as any).__lastDSOpts = opts
+    }
+  }
+  // We don’t need real types at runtime; TS will compile the test.
+  return { DataSource }
+})
 
-    it('uses MySQL with sane defaults when env is minimal', async () => {
-        const ds = await withEnv({
-            NODE_ENV: 'development',
-            DATABASE_NAME: 'tali_talent_org_health_development',
-            DATABASE_TYPE: undefined,
-            DATABASE_PORT: undefined,
-            DATABASE_HOST: undefined,
-            DATABASE_USERNAME: undefined,
-            DATABASE_PASSWORD: undefined,
-            DATABASE_SYNCHRONIZE: undefined,
-            DATABASE_MAX_CONNECTIONS: undefined,
-            DATABASE_SSL_ENABLED: undefined,
-        });
+/**
+ * Mock dotenv so we can assert which path was chosen
+ */
+const mockDotenv = (impl?: (args: any) => void) => {
+  vi.doMock('dotenv', () => {
+    return {
+      config: vi.fn(impl ?? (() => undefined)),
+    }
+  })
+}
 
-        const opts = ds.options as MysqlConnectionOptions;
-        expect(opts.type).toBe('mysql');
-        expect(opts.host).toBe('127.0.0.1');
-        expect(opts.port).toBe(3307);
-        expect(opts.username).toBe('root');
-        expect(opts.password).toBe('password');
-        expect(opts.database).toBe('tali_talent_org_health_development');
-        expect(opts.synchronize).toBe(false);
-        expect(opts.logging).toBe(true);
-        expect(opts.migrations?.length).toBeGreaterThan(0);
-        expect((opts as any).extra.connectionLimit).toBe(100);
-        expect((opts as any).ssl).toBeUndefined();
-    });
+/**
+ * Mock the local TypeOrmConfigService to control returned options
+ */
+const makeTypeOrmConfigMock = (options: Record<string, unknown>) => {
+  vi.doMock('./typeorm.config.service', () => {
+    class TypeOrmConfigService {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      constructor(_cfg: unknown) {}
+      createTypeOrmOptions() {
+        return options
+      }
+    }
+    return { TypeOrmConfigService }
+  })
+}
 
-    it('derives a *_test database and empty migrations in NODE_ENV=test', async () => {
-        const ds = await withEnv({
-            NODE_ENV: 'test',
-            DATABASE_NAME: 'tali_talent_org_health_development',
-        });
-        const opts = ds.options as MysqlConnectionOptions;
-        expect(opts.database).toBe('tali_talent_org_health_test');
-        expect(opts.migrations).toEqual([]);
-    });
+describe('data-source', () => {
+  it('uses .env.test when NODE_ENV=test and no DOTENV_CONFIG_PATH', async () => {
+    process.env.NODE_ENV = 'test'
+    mockDotenv()
+    makeTypeOrmConfigMock({
+      type: 'mysql',
+      host: '127.0.0.1',
+      autoLoadEntities: true,
+      retryAttempts: 3,
+    })
 
-    it('parses pool size and enables SSL when configured', async () => {
-        const ds = await withEnv({
-            NODE_ENV: 'production',
-            DATABASE_NAME: 'prod_db',
-            DATABASE_MAX_CONNECTIONS: '25',
-            DATABASE_SSL_ENABLED: 'true',
-            DATABASE_REJECT_UNAUTHORIZED: 'true',
-            DATABASE_CA: '---ca---',
-            DATABASE_KEY: '---key---',
-            DATABASE_CERT: '---cert---',
-        });
-        const opts = ds.options as MysqlConnectionOptions;
-        expect(opts.logging).toBe(false);
-        expect((opts as any).extra.connectionLimit).toBe(25);
-        const ssl = (opts as any).ssl;
-        expect(ssl).toBeTruthy();
-        expect(ssl.rejectUnauthorized).toBe(true);
-        expect(ssl.ca).toBe('---ca---');
-        expect(ssl.key).toBe('---key---');
-        expect(ssl.cert).toBe('---cert---');
-    });
+    const { default: AppDataSource } = await importFresh()
+    const dotenv = await import('dotenv')
 
-    it('respects DATABASE_URL when provided', async () => {
-        const ds = await withEnv({
-            DATABASE_URL: 'mysql://user:pass@db.example:3307/appdb',
-            DATABASE_NAME: 'ignored_when_url_set',
-        });
-        const opts = ds.options as MysqlConnectionOptions;
-        expect(opts.url).toBe('mysql://user:pass@db.example:3307/appdb');
-    });
-});
+    expect((dotenv as any).config).toHaveBeenCalledWith({ path: '.env.test' })
+
+    const passed = (globalThis as any).__lastDSOpts as Record<string, unknown>
+    expect(passed).toBeTruthy()
+    expect(passed.type).toBe('mysql')
+    expect(passed.host).toBe('127.0.0.1')
+    // stripped keys should be gone
+    expect(passed).not.toHaveProperty('autoLoadEntities')
+    expect(passed).not.toHaveProperty('retryAttempts')
+
+    // sanity: default export exists (constructed)
+    expect(AppDataSource).toBeDefined()
+  })
+
+  it('prefers DOTENV_CONFIG_PATH when provided (non-test)', async () => {
+    process.env.NODE_ENV = 'development'
+    process.env.DOTENV_CONFIG_PATH = 'custom.env'
+    mockDotenv()
+    makeTypeOrmConfigMock({ type: 'postgres', host: 'localhost' })
+
+    await importFresh()
+    const dotenv = await import('dotenv')
+    expect((dotenv as any).config).toHaveBeenCalledWith({ path: 'custom.env' })
+  })
+
+  it('falls back to .env when no test and no DOTENV_CONFIG_PATH', async () => {
+    process.env.NODE_ENV = 'development'
+    mockDotenv()
+    makeTypeOrmConfigMock({ type: 'sqlite', database: ':memory:' })
+
+    await importFresh()
+    const dotenv = await import('dotenv')
+    expect((dotenv as any).config).toHaveBeenCalledWith({ path: '.env' })
+  })
+
+  it('throws if TypeOrmConfigService does not provide a `type`', async () => {
+    process.env.NODE_ENV = 'development'
+    mockDotenv()
+    makeTypeOrmConfigMock({
+      // no `type` on purpose
+      host: 'localhost',
+      autoLoadEntities: true,
+    })
+
+    await expect(importFresh()).rejects.toThrow(
+        /Invalid TypeORM options: missing `type`/i,
+    )
+  })
+
+  it('strips all Nest-only keys before DataSource construction', async () => {
+    process.env.NODE_ENV = 'development'
+    mockDotenv()
+    makeTypeOrmConfigMock({
+      type: 'mysql',
+      host: 'db',
+      autoLoadEntities: true,
+      keepConnectionAlive: true,
+      retryAttempts: 5,
+      retryDelay: 1000,
+      toRetry: () => true,
+      verboseRetryLog: true,
+      manualInitialization: true,
+    })
+
+    await importFresh()
+    const passed = (globalThis as any).__lastDSOpts as Record<string, unknown>
+
+    // kept
+    expect(passed.type).toBe('mysql')
+    expect(passed.host).toBe('db')
+
+    // stripped
+    for (const key of [
+      'autoLoadEntities',
+      'keepConnectionAlive',
+      'retryAttempts',
+      'retryDelay',
+      'toRetry',
+      'verboseRetryLog',
+      'manualInitialization',
+    ]) {
+      expect(passed).not.toHaveProperty(key)
+    }
+  })
+})

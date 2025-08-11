@@ -9,9 +9,10 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**"]
     },
-    "lint": {
-      "outputs": []
-    },
+    "lint": { "outputs": [] },
+    "lint:fix": { "outputs": [] },
+    "format": { "outputs": [] },
+    "format:fix": { "outputs": [] },
     "test": { "dependsOn": ["^build"], "outputs": [] },
     "test:e2e": { "dependsOn": ["test"], "outputs": [] },
     "test:all": { "dependsOn": ["test:e2e"] }

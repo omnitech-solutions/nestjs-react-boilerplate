@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from 'axios'
 
 // In Vite, import.meta.env is always available in browser code
 const baseURL =
-    import.meta.env?.VITE_API_URL || // Vite build-time var
-    (typeof process !== 'undefined' && process.env?.VITE_API_URL) || // Jest/node fallback
-    'http://127.0.0.1:3000'; // default for dev
+  import.meta.env?.VITE_API_URL || // Vite build-time var
+  (typeof process !== 'undefined' && process.env?.VITE_API_URL) || // Jest/node fallback
+  'http://127.0.0.1:3000' // default for dev
 
 export const api = axios.create({
-    baseURL,
-    withCredentials: false,
-});
+  baseURL,
+  withCredentials: false
+})

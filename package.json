@@ -1,5 +1,5 @@
 {
-  "name": "org-health",
+  "name": "nestjs-react-boilerplate",
   "private": true,
   "version": "0.1.0",
   "packageManager": "pnpm@9.7.0",
@@ -9,13 +9,31 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
+    "dev:tui": "pnpm run dev --ui=tui",
     "build": "turbo run build",
-    "lint": "turbo run lint",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
-    "test:all": "turbo run test:all"
+    "test:all": "turbo run test:all",
+    "db:seed": "pnpm -C apps/api db:seed",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "turbo run format",
+    "format:fix": "turbo run format:fix"
   },
   "devDependencies": {
-    "turbo": "^2.5.5"
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.33.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^9.1.2",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.39.1"
   }
 }

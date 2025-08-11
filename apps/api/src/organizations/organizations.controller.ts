@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { OrganizationsService } from './organizations.service';
-import { CreateOrganizationDto, UpdateOrganizationDto } from './dto';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { OrganizationsService } from './organizations.service'
+import { CreateOrganizationDto, UpdateOrganizationDto } from './dto'
 
 @ApiTags('organizations')
 @Controller('organizations')
@@ -10,26 +10,26 @@ export class OrganizationsController {
 
   @Get()
   list() {
-    return this.service.findAll();
+    return this.service.findAll()
   }
 
-  @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOne(id);
+  @Get(':uuid')
+  get(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.service.findOne(uuid)
   }
 
   @Post()
   create(@Body() dto: CreateOrganizationDto) {
-    return this.service.create(dto);
+    return this.service.create(dto)
   }
 
-  @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateOrganizationDto) {
-    return this.service.update(id, dto);
+  @Put(':uuid')
+  update(@Param('uuid', ParseUUIDPipe) uuid: string, @Body() dto: UpdateOrganizationDto) {
+    return this.service.update(uuid, dto)
   }
 
-  @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
+  @Delete(':uuid')
+  delete(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.service.remove(uuid)
   }
 }
