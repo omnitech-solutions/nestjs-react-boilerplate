@@ -34,7 +34,7 @@ vi.mock('typeorm', () => {
 const mockDotenv = (impl?: (args: any) => void) => {
   vi.doMock('dotenv', () => {
     return {
-      config: vi.fn(impl ?? (() => undefined)),
+      config: vi.fn(impl ?? (() => undefined))
     }
   })
 }
@@ -63,7 +63,7 @@ describe('data-source', () => {
       type: 'mysql',
       host: '127.0.0.1',
       autoLoadEntities: true,
-      retryAttempts: 3,
+      retryAttempts: 3
     })
 
     const { default: AppDataSource } = await importFresh()
@@ -110,12 +110,10 @@ describe('data-source', () => {
     makeTypeOrmConfigMock({
       // no `type` on purpose
       host: 'localhost',
-      autoLoadEntities: true,
+      autoLoadEntities: true
     })
 
-    await expect(importFresh()).rejects.toThrow(
-        /Invalid TypeORM options: missing `type`/i,
-    )
+    await expect(importFresh()).rejects.toThrow(/Invalid TypeORM options: missing `type`/i)
   })
 
   it('strips all Nest-only keys before DataSource construction', async () => {
@@ -130,7 +128,7 @@ describe('data-source', () => {
       retryDelay: 1000,
       toRetry: () => true,
       verboseRetryLog: true,
-      manualInitialization: true,
+      manualInitialization: true
     })
 
     await importFresh()
@@ -148,7 +146,7 @@ describe('data-source', () => {
       'retryDelay',
       'toRetry',
       'verboseRetryLog',
-      'manualInitialization',
+      'manualInitialization'
     ]) {
       expect(passed).not.toHaveProperty(key)
     }

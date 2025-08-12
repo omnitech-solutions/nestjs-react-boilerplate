@@ -18,7 +18,7 @@ function createServiceMock(): ServiceMock {
     findOne: vi.fn(),
     create: vi.fn(),
     update: vi.fn(),
-    remove: vi.fn(),
+    remove: vi.fn()
   }
 }
 
@@ -55,7 +55,7 @@ describe('MetricsController', () => {
     const dto: CreateMetricDto = {
       name: 'Revenue',
       value: '12.34',
-      recorded_at: new Date().toISOString(),
+      recorded_at: new Date().toISOString()
     } as CreateMetricDto
     const saved = { uuid: 'new-id', ...dto }
     service.create.mockResolvedValue(saved)
