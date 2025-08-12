@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Typography, Card, Row, Col, Tag } from 'antd'
+import { Layout, Typography, Card, Row, Col, Tag, List } from 'antd'
 import { api } from './api'
 
 const { Header, Content } = Layout
@@ -7,11 +7,18 @@ const { Title, Paragraph } = Typography
 
 export default function App() {
   const [health, setHealth] = useState<any>(null)
+  const [metrics, setMetrics] = useState<any[]>([])
+
   useEffect(() => {
     api
       .get('/api/health')
       .then(r => setHealth(r.data))
       .catch(() => setHealth({ ok: false }))
+
+    api
+      .get('/api/metrics')
+      .then(r => setMetrics(r.data))
+      .catch(() => setMetrics([]))
   }, [])
 
   return (
@@ -31,8 +38,21 @@ export default function App() {
             </Card>
           </Col>
           <Col span={8}>
-            <Card title='Org Health Score'>
-              <Paragraph>Coming soon…</Paragraph>
+            <Card title='Metrics'>
+              {metrics.length > 0 ? (
+                <List
+                  size='small'
+                  dataSource={metrics}
+                  renderItem={m => (
+                    <List.Item>
+                      <strong>{m.name}:</strong> {m.value}
+                      {m.unit ? ` ${m.unit}` : ''}
+                    </List.Item>
+                  )}
+                />
+              ) : (
+                <Paragraph>No metrics available</Paragraph>
+              )}
             </Card>
           </Col>
           <Col span={8}>

@@ -132,41 +132,131 @@ pnpm -C apps/api db:seed:clear  # Clear all seeded data
 
 ---
 
-## Code Generation
-
-This project uses [Hygen](http://www.hygen.io/) to quickly scaffold API resources (entities, controllers, services, modules, DTOs, and seeds) following the plural-folder + UUID conventions.
-
-From the project root:
-
-```bash
-pnpm -C apps/api gen:entity Organization       # Entity (plural folder)
-pnpm -C apps/api gen:service Organization      # Service (UUID-based lookups)
-pnpm -C apps/api gen:controller Organization   # Controller (UUID + ParseUUIDPipe)
-pnpm -C apps/api gen:module Organization       # Module (imports TypeOrmModule.forFeature([...]))
-pnpm -C apps/api gen:dto Organization          # DTOs (CreateXxxDto / UpdateXxxDto)
-pnpm -C apps/api gen:seed Organization         # Seed service (dynamic seed framework)
-```
-
----
-
 ## Linting / Formatting
 
 From the project root:
 
 ```bash
-pnpm lint                             # Run lint across all packages
-pnpm lint:fix                         # Run lint with auto-fix across all packages
-pnpm format                           # Check code formatting across all packages
-pnpm format:fix                       # Format code across all packages
-
-pnpm -C apps/api lint                 # Lint API service
-pnpm -C apps/api lint:fix             # Lint API service and auto-fix issues
-pnpm -C apps/api format               # Check formatting in API service
-pnpm -C apps/api format:fix           # Format code in API service
-
-pnpm -C apps/web lint                 # Lint Web app
-pnpm -C apps/web lint:fix             # Lint Web app and auto-fix issues
-pnpm -C apps/web format               # Check formatting in Web app
-pnpm -C apps/web format:fix           # Format code in Web app
+pnpm lint
+pnpm lint:fix
+pnpm format
+pnpm format:fix
 ```
+
+---
+
+## Code Generation
+
+This project uses [Hygen](http://www.hygen.io/) to quickly scaffold API resources (entities, controllers, services, modules, DTOs, and seeds) following the plural-folder + UUID conventions.
+
+### Individual Generators
+
+```bash
+pnpm -C apps/api gen:entity <EntityName>
+pnpm -C apps/api gen:service <EntityName>
+pnpm -C apps/api gen:controller <EntityName>
+pnpm -C apps/api gen:module <EntityName>
+pnpm -C apps/api gen:dto <EntityName>
+pnpm -C apps/api gen:seed <EntityName>
+```
+
+### Full Resource Generator
+
+```bash
+pnpm -C apps/api gen:all --name <EntityName> --fields "fieldName:string otherField:decimal{18,6}?"
+```
+
+> `gen:all` calls all the above generators in sequence. Both `--name` and `--fields` are required.
+
+---
+
+## API Folder Structure
+
+```txt
+apps/api/src/
+├── <entity-names>/                       # e.g. insights
+│   ├── <entity-name>.entity.ts           # e.g. insight.entity.ts — Entity definition
+│   ├── <entity-name>.service.ts          # e.g. insight.service.ts — Business logic
+│   ├── <entity-name>.controller.ts       # e.g. insight.controller.ts — REST endpoints
+│   ├── <entity-name>.module.ts           # e.g. insight.module.ts — NestJS module wiring
+│   ├── dto/
+│   │   ├── create-<entity-name>.dto.ts   # e.g. create-insight.dto.ts — For POST
+│   │   ├── update-<entity-name>.dto.ts   # e.g. update-insight.dto.ts — For PATCH
+│   ├── seeds/
+│   │   └── <entity-name>.seed.service.ts # e.g. insight.seed.service.ts — Demo data
+│   └── index.ts                          # Barrel export (optional)
+├── app.module.ts                         # Main NestJS app module
+├── main.ts                               # App bootstrap
+```
+
+---
+
+## Example Generated Files (per generator)
+
+**Entity (**``**)**
+
+```ts
+@Entity({ name: '<entity-names>' })
+export class <EntityName> {
+  @PrimaryGeneratedColumn('uuid')
+  uuid!: string;
+
+  @Column({ type: 'decimal', precision: 18, scale: 6 })
+  value!: string;
+}
+```
+
+**Service (**``**)**
+
+```ts
+@Injectable()
+export class <EntityName>Service {
+  constructor(
+    @InjectRepository(<EntityName>)
+    private repo: Repository<<EntityName>>,
+  ) {}
+
+  findAll() {
+    return this.repo.find();
+  }
+}
+```
+
+**Controller (**``**)**
+
+```ts
+@Controller('<entity-names>')
+export class <EntityName>Controller {
+  constructor(private readonly service: <EntityName>Service) {}
+
+  @Get()
+  getAll() {
+    return this.service.findAll();
+  }
+}
+```
+
+**DTO (**``**)**
+
+```ts
+export class Create<EntityName>Dto {
+  @IsString()
+  value!: string;
+}
+```
+
+**Seed (**``**)**
+
+```ts
+@Injectable()
+export class <EntityName>SeedService {
+  constructor(private readonly service: <EntityName>Service) {}
+
+  async run() {
+    await this.service.create({ value: '123.45' });
+  }
+}
+```
+
+---
 
