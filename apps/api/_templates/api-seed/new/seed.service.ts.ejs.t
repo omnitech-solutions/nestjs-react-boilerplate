@@ -1,32 +1,54 @@
 ---
-to: src/database/seeds/<%= lower %>/<%= lower %>-seed.service.ts
+    to: src/database/seeds/<%= lower %>/<%= lower %>-seed.service.ts
 ---
-import {Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
-import { <%= name %> } from '../../<%= plural %>/<%= lower %>.entity';
-import {faker} from '@faker-js/faker';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { <%= name %> } from '<%= entityImportPath %>'
+<%_ if (hasFactory) { _%>
+import { make<%= name %> } from '<%= factoryImportPath %>'
+<%_ } else { _%>
+import { faker } from '@faker-js/faker'
+<%_ } _%>
 
 @Injectable()
 export class <%= name %>SeedService {
-    constructor(@InjectRepository(<%= name %>) private readonly repo: Repository<<%= name %>>) {
-    }
+    constructor(
+        @InjectRepository(<%= name %>)
+        private readonly repo: Repository<<%= name %>>
+    ) {}
 
+    // Idempotent seed
     async run() {
-        const exists = await this.repo.exist();
-        if (exists) {
-            console.log('[seed] <%= name %>s already exist — skipping.');
-            return;
+        const hasAny = await this.repo.exist()
+        if (hasAny) {
+            console.log('[seed] <%= plural %> already exist — skipping.')
+            return
         }
-        const items = Array.from({length: 10}).map(() =>
-            this.repo.create({name: faker.company.name()})
-        );
-        await this.repo.insert(items);
-        console.log('[seed] Inserted <%= name %>s.');
+
+        <%_ if (hasFactory) { _%>
+        const fakeData = Array.from({ length: 10 }).map(() => make<%= name %>())
+        <%_ } else { _%>
+        const fakeData = Array.from({ length: 10 }).map(() => this.make())
+        <%_ } _%>
+
+        await this.repo.insert(fakeData)
+        console.log('[seed] Inserted <%= plural %>.')
     }
 
+    // Clear seeded data (used by db:seed:clear)
     async clear() {
-        await this.repo.clear();
-        console.log('[seed] Cleared <%= name %>s.');
+        await this.repo.clear()
+        console.log('[seed] Cleared <%= plural %>.')
     }
+
+    <%_ if (!hasFactory) { _%>
+    // Inline builder (no factory found)
+    private make(overrides: Partial<<%= name %>> = {}): Partial<<%= name %>> {
+        return {
+            <%- makeBody %>
+            ...overrides
+        }
+    }
+    <%_ } _%>
 }
