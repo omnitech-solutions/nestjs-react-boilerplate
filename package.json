@@ -15,6 +15,7 @@
     "test:e2e": "turbo run test:e2e",
     "test:all": "turbo run test:all",
     "db:seed": "pnpm -C apps/api db:seed",
+    "db:migration:generate": "pnpm -C apps/api db:migration:generate",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "turbo run format",
