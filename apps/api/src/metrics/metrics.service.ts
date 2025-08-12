@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { Metric } from './metric.entity'
+
 import { CreateMetricDto, UpdateMetricDto } from './dto'
+import { Metric } from './metric.entity'
 
 @Injectable()
 export class MetricsService {

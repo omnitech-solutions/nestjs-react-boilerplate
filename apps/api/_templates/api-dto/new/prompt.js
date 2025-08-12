@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+ 
 const path = require('path')
 
 // allow importing TS AppModule
@@ -7,6 +7,7 @@ require('tsconfig-paths/register')
 
 const { NestFactory } = require('@nestjs/core')
 const { getDataSourceToken } = require('@nestjs/typeorm')
+
 const { AppModule } = require('../../../src/app.module')
 
 const RESERVED_SKIP = new Set(['uuid', 'createdAt', 'updatedAt'])

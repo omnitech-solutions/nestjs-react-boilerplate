@@ -1,8 +1,9 @@
 import { Test } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { OrganizationsService } from './organizations.service'
+
 import { Organization } from './organization.entity'
+import { OrganizationsService } from './organizations.service'
 
 describe('OrganizationsService', () => {
   let service: OrganizationsService

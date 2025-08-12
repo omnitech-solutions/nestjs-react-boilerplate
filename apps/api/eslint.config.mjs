@@ -1,2 +1,2 @@
-import config from '@nestjs-react-boilerplate/eslint-config'
-export default config
+import nodeConfig from "@nestjs-react-boilerplate/config/eslint/node";
+export default [...nodeConfig];

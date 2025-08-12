@@ -59,6 +59,7 @@
     "typeorm": "^0.3.25"
   },
   "devDependencies": {
+    "@nestjs-react-boilerplate/config": "workspace:^",
     "@nestjs-react-boilerplate/eslint-config": "workspace:^",
     "@nestjs/testing": "^11.1.6",
     "@swc/core": "^1.13.3",

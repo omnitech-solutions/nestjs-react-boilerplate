@@ -5,8 +5,8 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { HealthController } from './health.controller'
-import { OrganizationsModule } from './organizations/organizations.module'
 import { MetricsModule } from './metrics/metrics.module'
+import { OrganizationsModule } from './organizations/organizations.module'
 
 @Module({
   imports: [

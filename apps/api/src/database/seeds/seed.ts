@@ -1,6 +1,7 @@
+import { Type } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { ModuleRef } from '@nestjs/core'
-import { Type } from '@nestjs/common'
+
 import { SEED_CLASSES, SeedModule } from './seed.module'
 
 async function runAllSeeds() {

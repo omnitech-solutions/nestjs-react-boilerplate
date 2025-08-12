@@ -1,8 +1,9 @@
+import { faker } from '@faker-js/faker'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+
 import { Metric } from '../../../metrics/metric.entity'
-import { faker } from '@faker-js/faker'
 
 @Injectable()
 export class MetricSeedService {

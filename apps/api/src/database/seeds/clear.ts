@@ -1,5 +1,6 @@
-import { NestFactory, ModuleRef } from '@nestjs/core'
 import { Type } from '@nestjs/common'
+import { NestFactory, ModuleRef } from '@nestjs/core'
+
 import { SEED_CLASSES, SeedModule } from './seed.module'
 
 async function clearAllSeeds() {

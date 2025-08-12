@@ -1,6 +1,7 @@
 // apps/api/src/utils/discover-modules.ts
-import fg from 'fast-glob'
 import path from 'path'
+
+import fg from 'fast-glob'
 
 export async function loadFeatureModules(baseDir: string): Promise<any[]> {
   const patterns = [

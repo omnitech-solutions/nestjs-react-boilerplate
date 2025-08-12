@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { MetricsService } from './metrics.service'
-import { MetricsController } from './metrics.controller'
+
 import { Metric } from './metric.entity'
+import { MetricsController } from './metrics.controller'
+import { MetricsService } from './metrics.service'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Metric])],

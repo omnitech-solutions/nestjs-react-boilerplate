@@ -21,6 +21,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@nestjs-react-boilerplate/config": "workspace:^",
     "@nestjs-react-boilerplate/eslint-config": "workspace:^",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^14.3.1",

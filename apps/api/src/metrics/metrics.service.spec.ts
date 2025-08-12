@@ -1,10 +1,11 @@
 import 'reflect-metadata'
-import { describe, it, beforeEach, expect, vi } from 'vitest'
 import { NotFoundException } from '@nestjs/common'
 import type { Repository } from 'typeorm'
-import { MetricsService } from './metrics.service'
-import { Metric } from './metric.entity'
+import { describe, it, beforeEach, expect, vi } from 'vitest'
+
 import { CreateMetricDto, UpdateMetricDto } from './dto'
+import { Metric } from './metric.entity'
+import { MetricsService } from './metrics.service'
 
 type RepoMock<T> = {
   find: vi.Mock<Promise<T[]>, []>

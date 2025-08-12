@@ -1,5 +1,5 @@
-import { IsDateString, IsOptional, IsString, Length } from 'class-validator'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsDateString, IsOptional, IsString, Length } from 'class-validator'
 
 export class CreateMetricDto {
   @ApiProperty({ example: 'Example Name', minLength: 2, maxLength: 255 })

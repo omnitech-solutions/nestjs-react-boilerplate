@@ -1,8 +1,9 @@
 import 'reflect-metadata'
 import { describe, it, beforeEach, expect, vi } from 'vitest'
+
+import { CreateMetricDto, UpdateMetricDto } from './dto'
 import { MetricsController } from './metrics.controller'
 import { MetricsService } from './metrics.service'
-import { CreateMetricDto, UpdateMetricDto } from './dto'
 
 type ServiceMock = {
   findAll: ReturnType<typeof vi.fn>

@@ -1,6 +1,7 @@
 import 'reflect-metadata'
-import { describe, it, expect } from 'vitest'
 import { validate } from 'class-validator'
+import { describe, it, expect } from 'vitest'
+
 import { CreateMetricDto, UpdateMetricDto } from './dto'
 
 // Helper: validate an instance populated from a plain payload

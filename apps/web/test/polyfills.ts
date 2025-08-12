@@ -1,7 +1,8 @@
+// matchMedia stub (typed)
 if (!window.matchMedia) {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: (query: string) => ({
+    value: (query: string): MediaQueryList => ({
       matches: false,
       media: query,
       onchange: null,
@@ -11,14 +12,16 @@ if (!window.matchMedia) {
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn()
     })
-  })
+  });
 }
 
-if (!(window as any).ResizeObserver) {
+// ResizeObserver stub (typed, no "as any")
+if (!('ResizeObserver' in window)) {
   class ResizeObserver {
-    observe() {}
-    unobserve() {}
+    observe(_target: Element) {}
+    unobserve(_target: Element) {}
     disconnect() {}
   }
-  ;(window as any).ResizeObserver = ResizeObserver
+  // type-augment and assign safely
+  (window as unknown as { ResizeObserver: typeof ResizeObserver }).ResizeObserver = ResizeObserver;
 }

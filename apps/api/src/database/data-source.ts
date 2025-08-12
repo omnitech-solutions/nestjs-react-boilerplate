@@ -1,7 +1,8 @@
 import 'reflect-metadata'
-import { DataSource, DataSourceOptions } from 'typeorm'
-import * as dotenv from 'dotenv'
 import { ConfigService } from '@nestjs/config'
+import * as dotenv from 'dotenv'
+import { DataSource, DataSourceOptions } from 'typeorm'
+
 import { TypeOrmConfigService } from './typeorm.config.service'
 
 // Load env for CLI/migrations (Nest runtime uses ConfigModule)

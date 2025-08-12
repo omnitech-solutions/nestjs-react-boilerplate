@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { MetricsService } from './metrics.service'
+
 import { CreateMetricDto, UpdateMetricDto } from './dto'
+import { MetricsService } from './metrics.service'
 
 @ApiTags('metrics')
 @Controller('metrics')

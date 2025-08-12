@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+ 
 const fs = require('fs')
 const path = require('path')
 
@@ -8,6 +8,7 @@ require('tsconfig-paths/register')
 
 const { NestFactory } = require('@nestjs/core')
 const { getDataSourceToken } = require('@nestjs/typeorm')
+
 const { AppModule } = require('../../../src/app.module')
 
 const RESERVED_SKIP = new Set(['uuid', 'createdAt', 'updatedAt'])

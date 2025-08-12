@@ -1,6 +1,7 @@
 import 'reflect-metadata'
-import { describe, it, expect } from 'vitest'
 import { getMetadataArgsStorage } from 'typeorm'
+import { describe, it, expect } from 'vitest'
+
 import { Metric } from './metric.entity'
 
 describe('Metric entity mapping', () => {
