@@ -1,9 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "module": "commonjs",
-    "moduleResolution": "node"
+    "noEmit": false
   },
-  "exclude": ["test", "src/**/*.spec.ts", "src/**/*.e2e-spec.ts"]
+  "exclude": ["src/**/*.spec.ts", "src/**/*.e2e-spec.ts", "test", "**/*.test.ts"]
 }

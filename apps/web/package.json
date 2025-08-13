@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "typecheck": "tsc --noEmit",
+    "typecheck:test": "tsc --noEmit -p tsconfig.vitest.json",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
@@ -22,7 +24,6 @@
   },
   "devDependencies": {
     "@nestjs-react-boilerplate/config": "workspace:^",
-    "@nestjs-react-boilerplate/eslint-config": "workspace:^",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^14.3.1",
     "@types/node": "^20.19.10",

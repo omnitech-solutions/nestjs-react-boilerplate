@@ -8,6 +8,8 @@
     "packages/*"
   ],
   "scripts": {
+    "typecheck": "turbo run typecheck",
+    "typecheck:test": "turbo run typecheck:test",
     "dev": "turbo run dev --parallel",
     "dev:tui": "pnpm run dev --ui=tui",
     "build": "turbo run build",

@@ -260,3 +260,63 @@ export class <EntityName>SeedService {
 
 ---
 
+## Shared Config (`packages/config`)
+
+This package centralizes TypeScript, ESLint, Jest/Vitest, and other configuration so all apps and packages stay in sync.
+
+### Installing in an App
+
+From the monorepo root:
+
+```bash
+# Add package to the app
+pnpm --filter <app-name> add @nestjs-react-boilerplate/config
+```
+
+Replace `<app-name>` with the workspace name (e.g. `@nestjs-react-boilerplate/api`).
+
+### Using the Config
+
+#### TypeScript
+In your `tsconfig.json`:
+
+```jsonc
+{
+  "extends": "@nestjs-react-boilerplate/config/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["src", "test"]
+}
+```
+
+#### ESLint
+In `eslint.config.mjs`:
+
+```js
+import nodeConfig from "@nestjs-react-boilerplate/config/eslint/node";
+export default [...nodeConfig];
+```
+
+#### Vitest
+In `vitest.config.ts`:
+
+```ts
+import { defineConfig } from 'vitest/config';
+import baseConfig from '@nestjs-react-boilerplate/config/vitest';
+
+export default defineConfig({
+  ...baseConfig,
+  test: {
+    ...baseConfig.test,
+    globals: true,
+  },
+});
+```
+
+### Benefits
+- Single source of truth for config
+- Consistent linting, builds, and test rules
+- Easier upgrades across all apps
+
+---

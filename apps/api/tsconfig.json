@@ -1,17 +1,14 @@
 {
+  "extends": "@nestjs-react-boilerplate/config/tsconfig/node",
   "compilerOptions": {
-    "baseUrl": "./src",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es2019",
-    "outDir": "dist",
-    "rootDir": "src",
-    "strict": true,
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "types": ["node", "vitest/globals"]
+    "baseUrl": ".",
+    "outDir": "dist"
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "types/**/*.d.ts"]
+  "include": ["src", "scripts", "vitest.config.ts"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test",
+    "src/**/*.{test,spec,e2e-spec}.ts"
+  ]
 }

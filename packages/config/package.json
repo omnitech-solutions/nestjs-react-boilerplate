@@ -11,7 +11,9 @@
     "./tsconfig/base": "./tsconfig/base.json",
     "./tsconfig/node": "./tsconfig/node.json",
     "./tsconfig/react": "./tsconfig/react.json",
-    "./tsconfig/jest": "./tsconfig/jest.json"
+    "./tsconfig/vitest-node": "./tsconfig/vitest-node.json",
+    "./tsconfig/vitest-nest": "./tsconfig/vitest-nest.json",
+    "./tsconfig/vitest-react": "./tsconfig/vitest-react.json"
   },
   "files": [
     "index.mjs",

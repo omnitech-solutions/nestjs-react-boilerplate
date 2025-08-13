@@ -9,6 +9,8 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**"]
     },
+    "typecheck": { "outputs": [] },
+    "typecheck:test": { "outputs": [] },
     "lint": { "outputs": [] },
     "lint:fix": { "outputs": [] },
     "format": { "outputs": [] },

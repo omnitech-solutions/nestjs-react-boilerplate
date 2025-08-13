@@ -1,18 +1,18 @@
 import 'reflect-metadata'
 import { NotFoundException } from '@nestjs/common'
 import type { Repository } from 'typeorm'
-import { describe, it, beforeEach, expect, vi } from 'vitest'
+import { describe, it, beforeEach, expect, vi, type MockedFunction } from 'vitest'
 
 import { CreateMetricDto, UpdateMetricDto } from './dto'
 import { Metric } from './metric.entity'
 import { MetricsService } from './metrics.service'
 
 type RepoMock<T> = {
-  find: vi.Mock<Promise<T[]>, []>
-  findOne: vi.Mock<Promise<T | null>, [any]>
-  create: vi.Mock<T, [Partial<T>]>
-  save: vi.Mock<Promise<T>, [T]>
-  remove: vi.Mock<Promise<void>, [T]>
+  find: MockedFunction<() => Promise<T[]>>
+  findOne: MockedFunction<(q: { where: { uuid: string } }) => Promise<T | null>>
+  create: MockedFunction<(p: Partial<T>) => T>
+  save: MockedFunction<(t: T) => Promise<T>>
+  remove: MockedFunction<(t: T) => Promise<void>>
 }
 
 function createRepoMock<T>(): RepoMock<T> {
@@ -31,7 +31,7 @@ describe('MetricsService', () => {
 
   beforeEach(() => {
     repo = createRepoMock<Metric>()
-    // Cast only at injection point; keeps our mock strongly typed for .mock* helpers
+    // Cast only at injection; keeps mocks strongly typed above.
     svc = new MetricsService(repo as unknown as Repository<Metric>)
     vi.clearAllMocks()
   })
@@ -66,8 +66,8 @@ describe('MetricsService', () => {
       recorded_at: new Date().toISOString()
     } as CreateMetricDto
 
-    const created = { ...dto } as Metric
-    const saved = { uuid: 'new-id', ...created } as Metric
+    const created = { ...dto } as unknown as Metric
+    const saved = { ...created, uuid: 'new-id' } as Metric
 
     repo.create.mockReturnValue(created)
     repo.save.mockResolvedValue(saved)
@@ -95,7 +95,7 @@ describe('MetricsService', () => {
   it('remove -> finds then removes', async () => {
     const existing = { uuid: 'id-2' } as Metric
     repo.findOne.mockResolvedValue(existing)
-    repo.remove.mockResolvedValue()
+    repo.remove.mockResolvedValue(undefined)
 
     await svc.remove('id-2')
     expect(repo.findOne).toHaveBeenCalledWith({ where: { uuid: 'id-2' } })

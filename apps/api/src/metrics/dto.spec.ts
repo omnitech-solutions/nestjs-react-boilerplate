@@ -5,7 +5,7 @@ import { describe, it, expect } from 'vitest'
 import { CreateMetricDto, UpdateMetricDto } from './dto'
 
 // Helper: validate an instance populated from a plain payload
-async function runValidation<T>(Cls: new () => T, payload: Partial<T>) {
+async function runValidation<T extends object>(Cls: new () => T, payload: Partial<T>) {
   const instance = Object.assign(new Cls(), payload)
   return validate(instance)
 }

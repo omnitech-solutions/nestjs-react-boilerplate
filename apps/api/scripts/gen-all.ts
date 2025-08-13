@@ -1,7 +1,5 @@
-/* scripts/gen-all.ts */
 import path from 'path'
 
-// Keep CommonJS style to match your tsconfig ("module": "commonjs")
 const { execa } = require('execa')
 
 type ArgMap = Record<string, string | boolean>
@@ -9,11 +7,13 @@ type ArgMap = Record<string, string | boolean>
 function parseArgs(argv: string[]): ArgMap {
   const out: ArgMap = {}
   for (let i = 0; i < argv.length; i++) {
-    const a = argv[i]
-    if (!a.startsWith('--')) continue
+    const a = argv[i]!
+    if (a == null || !a.startsWith('--')) continue
+
     const key = a.slice(2)
     const next = argv[i + 1]
-    if (next && !next.startsWith('--')) {
+
+    if (next != null && !next.startsWith('--')) {
       out[key] = next
       i++
     } else {
@@ -35,16 +35,12 @@ async function main() {
 
   if (!name || !fields) {
     console.error(
-      'Usage:\n  pnpm -C apps/api gen:all --name <Entity> --fields "<rails-like fields>"\n\nExample:\n  pnpm -C apps/api gen:all --name Insight --fields "value:decimal{18,6} unit:string{32}? recorded_at:datetime"\n'
+        'Usage:\n  pnpm -C apps/api gen:all --name <Entity> --fields "<rails-like fields>"\n\nExample:\n  pnpm -C apps/api gen:all --name Insight --fields "value:decimal{18,6} unit:string{32}? recorded_at:datetime"\n'
     )
     process.exit(1)
   }
 
-  // entity script expects: <name> --fields "<...>"
   await runPnpm('gen:entity', [name, '--fields', fields])
-
-  // the rest of your scripts already include "--name" in package.json,
-  // so we pass just the value as the next arg
   await runPnpm('gen:dto', [name])
   await runPnpm('gen:service', [name])
   await runPnpm('gen:controller', [name])

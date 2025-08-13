@@ -35,7 +35,7 @@ export default [
     name: "overrides:web-tests",
     files: [
       "test/**/*.{ts,tsx}",
-      "**/*.test.{ts,tsx}"
+      "src/**/*.{spec,test,e2e,e2e-spec}.{ts,tsx}"
     ],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
