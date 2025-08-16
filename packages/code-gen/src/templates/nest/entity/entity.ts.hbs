@@ -1,0 +1,23 @@
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+
+@Entity({ name: '{{tableName}}' })
+export class {{pascalCase entityName}} {
+{{#if (eq primary.strategy 'uuid')}}
+  @PrimaryGeneratedColumn('uuid', { name: '{{primary.name}}' })
+  {{primary.name}}!: string
+{{else}}
+  @PrimaryGeneratedColumn('increment', { name: '{{primary.name}}' })
+  {{primary.name}}!: number
+{{/if}}
+
+{{#each properties}}
+  @Column({ type: '{{columnType}}'{{#if length}}, length: {{length}}{{/if}}{{#if nullable}}, nullable: true{{/if}} })
+  {{name}}{{#if nullable}}?{{else}}!{{/if}}: {{tsType}}{{#if nullable}} | null{{/if}}
+
+{{/each}}
+  @CreateDateColumn({ name: 'created_at', type: 'datetime' })
+  createdAt!: Date
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
+  updatedAt!: Date
+}

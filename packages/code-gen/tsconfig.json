@@ -1,0 +1,18 @@
+{
+  "extends": "@nestjs-react-boilerplate/config/tsconfig/node",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "types": ["vitest/globals", "node"],
+    "paths": {
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"]
+    }
+  },
+  "include": ["src", "scripts", "vitest.config.ts", "src/types"],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
