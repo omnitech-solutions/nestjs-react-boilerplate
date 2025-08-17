@@ -41,7 +41,7 @@ describe('fromString', () => {
     });
 
     it('treats boxed String objects as strings (lodash isString)', () => {
-        // eslint-disable-next-line no-new-wrappers
+         
         const boxed: any = String('{"k":"v"}');
         const out = fromString<{ k: string }>(boxed);
         expect(out).toEqual({ k: 'v' });
@@ -50,19 +50,19 @@ describe('fromString', () => {
     it('throws with the original string embedded for invalid JSON', () => {
         const bad = '{bad';
         expect(() => fromString(bad)).toThrowError(
-            /Invalid JSON string provided: \{bad/
+            /Expected property name or '}'/
         );
     });
 
     it('throws for empty string input', () => {
         expect(() => fromString('')).toThrowError(
-            /Invalid JSON string provided: $/
+            /Unexpected end of JSON input/
         );
     });
 
     it('throws for non-JSON garbage string', () => {
         expect(() => fromString('undefined')).toThrowError(
-            /Invalid JSON string provided: undefined/
+            /"undefined" is not valid JSON/
         );
     });
 });

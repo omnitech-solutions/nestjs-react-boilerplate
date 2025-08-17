@@ -1,7 +1,6 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import {describe, expect, it} from 'vitest';
 import nodePlop from 'node-plop';
 import * as fs from 'node:fs/promises';
-import fssync from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
 
@@ -56,9 +55,8 @@ describe('plop entity generator (node-plop)', () => {
         const generator = plop.getGenerator('entity');
 
         const schema = JSON.stringify(schemaOrgUuid());
-
         const results = await generator.runActions({ schema });
-        expect(results.failures.length).toBe(0);
+        expect(results.failures).toEqual([]);
 
         const filePath = path.join(tmp, 'src/entities/organization.entity.ts');
         const body = await readFileIfExists(filePath);

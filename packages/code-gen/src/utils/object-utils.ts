@@ -1,4 +1,4 @@
-import { isString } from 'lodash-es';
+import {isString} from 'lodash-es';
 
 /**
  * Parses a JSON string into a JavaScript object.
@@ -12,14 +12,16 @@ import { isString } from 'lodash-es';
  * @returns {T | unknown} The parsed object with type T, or the original value if it was not a string.
  * @throws {Error} If the string is not valid JSON, the error message will include the failed input.
  */
-export function fromString<T = unknown>(input: string | T): T | unknown {
+export const fromString = <T = unknown>(input: string | T): T | unknown => {
     if (!isString(input)) {
         return input;
     }
 
     try {
         return JSON.parse(input);
-    } catch (error) {
-        throw new Error(`Invalid JSON string provided: ${input}`);
+    } catch (e: unknown) {
+        const reason =
+            e instanceof Error && e.message ? e.message : String(e);
+        throw new Error(`Invalid JSON input: "${String(input)}". Reason: ${reason}`);
     }
-}
+};
