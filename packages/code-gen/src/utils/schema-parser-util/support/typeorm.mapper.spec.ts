@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { toTypeOrmTemplateVM, type TypeOrmTemplateVM } from './typeorm.mapper';
-import type { EntityGen } from '../entity-gen.schema';
+import type { EntityGen } from '../../../templates/nest/schemas/entity-gen.schema';
 
 function vmOf(input: EntityGen): TypeOrmTemplateVM {
     return toTypeOrmTemplateVM(input);

@@ -1,4 +1,4 @@
-import type { EntityGen } from '../entity-gen.schema';
+import type { EntityGen } from '../../../templates/nest/schemas/entity-gen.schema';
 
 type MappedField = {
     name: string;

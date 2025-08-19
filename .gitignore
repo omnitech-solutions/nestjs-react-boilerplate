@@ -20,6 +20,7 @@ build
 .turbo
 .vscode
 *.swp
+.nx
 
 # OS files
 .DS_Store
