@@ -1,0 +1,14 @@
+{
+  "extends": "@nestjs-react-boilerplate/config/tsconfig/node",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist"
+  },
+  "include": ["src", "scripts", "vitest.config.ts"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test",
+    "src/**/*.{test,spec,e2e-spec}.ts"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "@nestjs-react-boilerplate/config/tsconfig/vitest-node",
+  "compilerOptions": { "composite": true },
+  "include": [
+    "src/**/*.{spec,test,e2e,e2e-spec}.{ts,tsx}",
+    "vitest.config.ts"
+  ],
+  "exclude": ["dist", "node_modules"]
+}

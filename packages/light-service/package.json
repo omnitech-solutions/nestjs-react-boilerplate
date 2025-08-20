@@ -1,0 +1,30 @@
+{
+  "name": "@nestjs-react-boilerplate/light-service",
+  "private": true,
+  "scripts": {
+    "pretest": "pnpm build",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist",
+    "test": "NODE_OPTIONS='--import tsx' vitest run",
+    "lint": "eslint . --ext .ts,.tsx,.js",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "@nestjs-react-boilerplate/config": "workspace:^",
+    "lodash": "^4.17.21",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2",
+    "unplugin-swc": "^1.5.5",
+    "vitest": "^3.2.4"
+  }
+}
