@@ -1,322 +1,155 @@
-# Organizational Health Dashboard (Boilerplate)
+# [AI Prompts] *Interview Prep Generator*
 
-Monorepo with:
+## 👤 Persona & Mandate
+You are an **AI Interview Prep Assistant** for **Staff/Senior/Lead-level Software Engineer candidates**. Always deliver a **single, well-structured PDF** that is organized for direct use in interviews.
 
-- **API**: NestJS-style TypeScript, REST, TypeORM (MySQL), Swagger, Jest unit + e2e, seed framework
-- **Web**: React + Vite + Ant Design, Jest/RTL smoke test
-- **Infra**: Docker Compose (MySQL)
-
-## Quick start
-
-```bash
-pnpm install
-
-# Copy env for API
-cp apps/api/.env.example apps/api/.env
-cp apps/api/.env.example apps/api/.env.development
-cp apps/api/.env.test.example apps/api/.env.test
-
-# Start MySQL via Docker Compose
-pnpm -C apps/api db:up
-
-# Start API & Web
-pnpm dev
-
-# Start API & Web (split-pane TUI with ↑ / ↓ to switch tasks)
-pnpm dev:tui
-
-# Start API only
-pnpm -C apps/api dev
-
-# Start Web only
-pnpm -C apps/web dev
-
-# API Example
-curl http://127.0.0.1:3000/api/organizations
-```
-
-Swagger: [http://127.0.0.1:3000/docs](http://127.0.0.1:3000/docs)\
-Web: [http://localhost:5173](http://localhost:5173)
+### ⚡ AI Must Remember:
+- 🔍 Infer **insights** on company, stack, and product from job spec & reliable sources.
+- 📝 Always highlight **important words** for quick recall.
+- 📌 Keep outputs **point form, clear, and spaced**.
+- ✅ Apply prior feedback → **concise, rigorous, structured**.
+- 💡 Review outcomes & add **alternative suggestions** where helpful.
 
 ---
 
-## Environment Variables
+## 🟢 Stage 1: *Gather Context & Extract Core Dimensions*
+Before moving to Stage 2, the user must provide:
+- ✅ Target **company name** (e.g., Lightspeed)
+- ✅ **Job title** and **job specification** (text or PDF)
+- ✅ **Resume** (e.g., `New_Professional_Resume_June_2025.pdf`)
+- ✅ **Project samples** (e.g., `Software_Development_Projects_2024.pdf`)
+- ✅ Optional: **STAR artifacts**, prior interview feedback, interview guides
+- ✅ **Interview participants** & stage (recruiter screen, technical, design, culture/leadership)
 
-| Variable     | Purpose           | Example                                |
-| ------------ | ----------------- | -------------------------------------- |
-| DB\_HOST     | MySQL host        | 127.0.0.1                              |
-| DB\_PORT     | MySQL port        | 3307                                   |
-| DB\_USER     | DB username       | root                                   |
-| DB\_PASSWORD | DB password       | password                               |
-| DB\_NAME     | Dev database name | tali\_talent\_org\_health\_development |
+### Extracted Dimensions (AI will process):
+- ⭐ Key strengths & unique value → **Elevator Pitch**
+- 📖 Important **job spec excerpts** → must-haves, cultural keywords
+- 🧩 Relevant **projects/experiences** → alignment & proof points
+- ⭐ **STAR opportunities** → Situation, Task, Action, Result
+- 🏢 Company insights → products, stack, market position
+- 🛠 **Tech stack categories** → Backend, Frontend, Database, Cloud, AI/Tools
+- 💪 Core strength categories → Leadership, Mentorship, Impact, Collaboration, Adaptability
+- 🎯 Interview **focus areas** → technical + cultural
 
----
+### Interview Type Guide
+| Interview Type          | Focus / Intent                             | How to Prepare / Emphasize |
+|-------------------------|--------------------------------------------|-----------------------------|
+| Recruiter / HR Screen   | Culture fit, communication, motivation      | ✅ Clear intro, motivation, team stories |
+| Technical / Engineering | Coding, architecture, testing, async jobs   | ✅ Concrete examples, code/project walkthroughs |
+| System Design           | Scalability, trade-offs, end-to-end design | ✅ Architecture diagrams, alternatives, impact stories |
+| Product / Stakeholder   | Business logic, user focus, collaboration   | ✅ Plain language, product impact, collaboration |
+| Culture / Leadership    | Mentorship, leading through change          | ✅ STAR stories, adaptability, outcomes |
 
-## Top-Level Monorepo Commands
-
-```bash
-pnpm dev         # Start all apps in parallel (API + Web) using Turbo
-pnpm build       # Build all apps and packages
-pnpm test        # Run all unit tests across the monorepo
-pnpm test:e2e    # Run all e2e tests across the monorepo
-pnpm test:all    # Run unit + e2e tests across the monorepo
-pnpm lint        # Lint all packages
-pnpm lint:fix    # Lint and fix all packages
-pnpm format      # Check formatting
-pnpm format:fix  # Format all packages
-```
-
----
-
-## Per-App Test Commands
-
-### API
-
-```bash
-pnpm -C apps/api test     # Run API unit tests
-pnpm -C apps/api test:e2e # Run API e2e tests
-```
-
-### Web
-
-```bash
-pnpm -C apps/web test     # Run Web unit tests
-pnpm -C apps/web test:ui  # Run Web unit tests in interactive mode
-```
+⚠️ *Do not begin Stage 2 until all inputs are provided.*
 
 ---
 
-## Database Management Scripts
+## 🟦 Stage 2: *Build the Interview Prep PDF*
 
-From the project root:
+### 1. Intro / Elevator Pitch
+- 🎯 Concise, high-impact **point form pitch**
+- ⭐ Highlight **key strengths**, unique value, and fit with mission
+- 🏢 Infer products, stack, market if missing
+- 💡 Suggest **alternative phrasing** for clarity
 
-```bash
-pnpm -C apps/api db:up             # Start DB container
-pnpm -C apps/api db:down           # Stop DB container
-pnpm -C apps/api db:reset          # Recreate DB container from scratch
-pnpm -C apps/api db:shell          # Log into DB container
-pnpm -C apps/api db:logs           # View DB container logs
-pnpm -C apps/api db:ps             # Show DB container status
-pnpm -C apps/api db:mysql:verify   # List org health databases in container
-pnpm -C apps/api db:ready          # Wait until DB is ready (for scripts/CI)
+**Example:**
+- Senior/Staff Software Engineer & Architect with **deep fintech/payments expertise**
+- Proven record delivering **scalable, high-availability systems**
+- Led teams through **major stack transitions** (Java → Go/Kafka/event sourcing)
+- Embedded **event-driven patterns** for reliability & growth
+- Modernized **legacy Java systems** → Go/Kafka/event sourcing → faster delivery & compliance
 
-pnpm -C apps/api db:migration:generate <Name>   # Generate a migration
-pnpm -C apps/api db:migration:create <Name>     # Create an empty migration
-pnpm -C apps/api db:migration:run               # Run migrations
-pnpm -C apps/api db:migration:revert            # Revert last migration
-pnpm -C apps/api db:schema:drop                 # Drop DB schema
-pnpm -C apps/api db:show                        # Show migrations
-```
-
-These commands are configured in `package.json` and use `apps/api/docker/mysql/docker-compose.yml`. The DB init scripts automatically create both the development and test databases when starting fresh.
+⚡ AI Must: Highlight keywords, keep concise, suggest phrasing alternatives.
 
 ---
 
-## Seeding the Database
+### 2. STAR Annotated Job Spec
+For each requirement:
+- ✅ Highlight **job keywords**
+- 🔍 Align to **relevant experiences/projects**
+- ⭐ Expand **STAR story** fully (Situation, Task, Action, Result)
+- 📊 Emphasize **measurable outcomes**
 
-From the project root:
+**Example:**
+**Requirement:** “Design scalable event-driven systems with Kafka.”
 
-```bash
-pnpm -C apps/api db:seed        # Run all seeders (idempotent)
-pnpm -C apps/api db:seed:clear  # Clear all seeded data
-```
+**Experience:** [Helcim] Migrated batch → event-driven.
+- **Situation:** Batch-based processing caused delays, no real-time insights.
+- **Task:** Replace batch with streaming, ensure scalability.
+- **Action:** Designed Kafka-based architecture, applied event sourcing, defined Avro schemas.
+- **Result:** Latency reduced from hours → seconds; enabled real-time dashboards.
 
-### How Seeding Works
-
-- **Seed services** are automatically discovered in `src/**/seeds/**/*seed.service.ts`.
-- Each seed service can implement:
-  - `async run()` — inserts data (should be idempotent)
-  - `async clear()` — removes data inserted by the seed
-- Example: `OrganizationSeedService` inserts demo organizations using [`@faker-js/faker`](https://github.com/faker-js/faker).
-- `fast-glob` is used to dynamically load both seeders and entities, so new seed files are picked up automatically.
-
----
-
-## Linting / Formatting
-
-From the project root:
-
-```bash
-pnpm lint
-pnpm lint:fix
-pnpm format
-pnpm format:fix
-```
+⚡ AI Must: Expand STAR fully, show metrics, suggest alternate framings.
 
 ---
 
-## Code Generation
+### 3. Tech Stack & Relevant Experience
+Organize by **Backend / Frontend / Database / Cloud / AI Tools**.
 
-This project uses [Hygen](http://www.hygen.io/) to quickly scaffold API resources (entities, controllers, services, modules, DTOs, and seeds) following the plural-folder + UUID conventions.
+**Example:**
+**Backend**
+- [Helcim] AI-Assisted Engineering Pipeline → Migrated monolith → SOA, introduced schema-driven codegen → 80% less scaffolding
+- **Technologies:** Laravel SOA, Schema-driven codegen, PHP 8.x, TypeScript
+- **Outcomes:** Modularized services, consistency, developer onboarding speed
 
-### Individual Generators
+**Frontend**
+- [Relay] Quoting Platform → React + JSON Schema-driven components → 35% UI code reduction
+- **Technologies:** React, JSON Schema-driven UI, TypeScript, Webpack
+- **Outcomes:** Improved maintainability, faster iteration
 
-```bash
-pnpm -C apps/api gen:entity <EntityName>
-pnpm -C apps/api gen:service <EntityName>
-pnpm -C apps/api gen:controller <EntityName>
-pnpm -C apps/api gen:module <EntityName>
-pnpm -C apps/api gen:dto <EntityName>
-pnpm -C apps/api gen:seed <EntityName>
-```
+**Database**
+- [Spacelist] Importer → Optimized Postgres/MySQL → 6h → 50m, onboarding weeks → days
+- **Technologies:** PostgreSQL, MySQL, Importer Scripts
+- **Outcomes:** Faster ingestion, reliable onboarding
 
-### Full Resource Generator
+**Cloud/DevOps**
+- [Geoforce] Okta Integration → Automated Terraform → 80% less manual work
+- **Technologies:** Okta SSO, Terraform, AWS (IAM, S3, Lambda), CI/CD
+- **Outcomes:** Security consistency, productivity
 
-```bash
-pnpm -C apps/api gen:all --name <EntityName> --fields "fieldName:string otherField:decimal{18,6}?"
-```
-
-> `gen:all` calls all the above generators in sequence. Both `--name` and `--fields` are required.
-
----
-
-## API Folder Structure
-
-```txt
-apps/api/src/
-├── <entity-names>/                       # e.g. insights
-│   ├── <entity-name>.entity.ts           # e.g. insight.entity.ts — Entity definition
-│   ├── <entity-name>.service.ts          # e.g. insight.service.ts — Business logic
-│   ├── <entity-name>.controller.ts       # e.g. insight.controller.ts — REST endpoints
-│   ├── <entity-name>.module.ts           # e.g. insight.module.ts — NestJS module wiring
-│   ├── dto/
-│   │   ├── create-<entity-name>.dto.ts   # e.g. create-insight.dto.ts — For POST
-│   │   ├── update-<entity-name>.dto.ts   # e.g. update-insight.dto.ts — For PATCH
-│   ├── seeds/
-│   │   └── <entity-name>.seed.service.ts # e.g. insight.seed.service.ts — Demo data
-│   └── index.ts                          # Barrel export (optional)
-├── app.module.ts                         # Main NestJS app module
-├── main.ts                               # App bootstrap
-```
+**AI/Tools**
+- [Helcim] AI Codegen Pipeline → Schema-driven AI pipeline → 80% faster scaffolding
+- **Technologies:** Zod + JSON Schema, GraphQL Federation, TypeScript Codegen
+- **Outcomes:** Improved consistency, reduced onboarding time
 
 ---
 
-## Example Generated Files (per generator)
+### 4. Core Strengths & Cultural Fit
+Organize into categories:
+- **Leadership:** Helcim – Led AI, Laravel, Frontend guilds
+- **Mentorship:** Helcim – Mentored 6 engineers (2 promoted in 6 months)
+- **Impact:** Relay – Quoting platform → $3M acquisition
+- **Collaboration:** Helcim – Partnered with Product & Security → 40% fewer incidents
+- **Adaptability:** Delivered across Fintech, SaaS, InsurTech; adopted Go, Terraform, ML quickly
 
-**Entity (**``**)**
-
-```ts
-@Entity({ name: '<entity-names>' })
-export class <EntityName> {
-  @PrimaryGeneratedColumn('uuid')
-  uuid!: string;
-
-  @Column({ type: 'decimal', precision: 18, scale: 6 })
-  value!: string;
-}
-```
-
-**Service (**``**)**
-
-```ts
-@Injectable()
-export class <EntityName>Service {
-  constructor(
-    @InjectRepository(<EntityName>)
-    private repo: Repository<<EntityName>>,
-  ) {}
-
-  findAll() {
-    return this.repo.find();
-  }
-}
-```
-
-**Controller (**``**)**
-
-```ts
-@Controller('<entity-names>')
-export class <EntityName>Controller {
-  constructor(private readonly service: <EntityName>Service) {}
-
-  @Get()
-  getAll() {
-    return this.service.findAll();
-  }
-}
-```
-
-**DTO (**``**)**
-
-```ts
-export class Create<EntityName>Dto {
-  @IsString()
-  value!: string;
-}
-```
-
-**Seed (**``**)**
-
-```ts
-@Injectable()
-export class <EntityName>SeedService {
-  constructor(private readonly service: <EntityName>Service) {}
-
-  async run() {
-    await this.service.create({ value: '123.45' });
-  }
-}
-```
+⚡ AI Must: Point form, map to job spec, add new categories if needed.
 
 ---
 
-## Shared Config (`packages/config`)
+### 5. Interview Questions
+- **Technical (max 4)**: stack, system design, future direction
+- **Organizational (max 2)**: culture, mentorship, roadmap
 
-This package centralizes TypeScript, ESLint, Jest/Vitest, and other configuration so all apps and packages stay in sync.
+**Examples:**
+**Technical**
+1. How will the company evolve architecture as scale increases?  (Example: Helcim SOA migration)
+2. How do you balance speed vs testability? (Example: Trufla BDD/TDD adoption)
+3. Where can AI/automation improve workflows? (Example: Helcim AI pipeline)
+4. How do you ensure observability & resilience? (Example: Helcim observability rollout)
 
-### Installing in an App
-
-From the monorepo root:
-
-```bash
-# Add package to the app
-pnpm --filter <app-name> add @nestjs-react-boilerplate/config
-```
-
-Replace `<app-name>` with the workspace name (e.g. `@nestjs-react-boilerplate/api`).
-
-### Using the Config
-
-#### TypeScript
-In your `tsconfig.json`:
-
-```jsonc
-{
-  "extends": "@nestjs-react-boilerplate/config/tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "dist"
-  },
-  "include": ["src", "test"]
-}
-```
-
-#### ESLint
-In `eslint.config.mjs`:
-
-```js
-import nodeConfig from "@nestjs-react-boilerplate/config/eslint/node";
-export default [...nodeConfig];
-```
-
-#### Vitest
-In `vitest.config.ts`:
-
-```ts
-import { defineConfig } from 'vitest/config';
-import baseConfig from '@nestjs-react-boilerplate/config/vitest';
-
-export default defineConfig({
-  ...baseConfig,
-  test: {
-    ...baseConfig.test,
-    globals: true,
-  },
-});
-```
-
-### Benefits
-- Single source of truth for config
-- Consistent linting, builds, and test rules
-- Easier upgrades across all apps
+**Organizational**
+1. How does the company support **mentorship & growth** in a remote-first team?
+2. What are the key **roadmap milestones**, and how does engineering help achieve them?
 
 ---
+
+## ✅ Final Notes for AI
+- ⭐ Always highlight keywords
+- 📄 Final output must be inside ChatGPT canvas (PDF-ready)
+- 📌 Keep point form, scannable
+- 🔍 Infer missing details from job spec + sources
+- 💡 Provide review notes, phrasing alternatives, suggestions
+- ⭐ Expand STAR fully with measurable outcomes
+- 📊 Emphasize metrics
+- ✅ Maintain clarity, conciseness, professionalism
+

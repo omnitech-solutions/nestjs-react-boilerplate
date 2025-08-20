@@ -1,9 +1,18 @@
 {
   "extends": "./base.json",
   "compilerOptions": {
+    "module": "ESNext",
     "moduleResolution": "Bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "types": ["vite/client"]
-  }
+  },
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "__tests__"
+  ]
 }

@@ -1,11 +1,19 @@
 {
   "extends": "./base.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "types": ["node"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false
+  },
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "__tests__"
+  ]
 }

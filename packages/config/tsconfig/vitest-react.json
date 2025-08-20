@@ -1,6 +1,7 @@
 {
   "extends": "./react.json",
   "compilerOptions": {
-    "types": ["vitest/globals", "vite/client", "node"]
-  }
+    "types": ["vite/client", "vitest/globals"]
+  },
+  "include": ["**/*.spec.ts", "**/*.test.ts", "__tests__/**/*"]
 }

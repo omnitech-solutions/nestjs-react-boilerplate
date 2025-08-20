@@ -15,6 +15,12 @@ export default [
       "unused-imports": unusedImports
     },
     rules: {
+      "@typescript-eslint/ban-ts-comment": [
+        "error",
+        {
+          "ts-ignore": false
+        },
+      ],
       "unused-imports/no-unused-imports": "error",
       "import/order": ["error", {
         "alphabetize": { "order": "asc", "caseInsensitive": true },
